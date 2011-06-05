@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "common.h"
+
 struct {
   char *name;
   git_cb fn;
@@ -33,6 +35,6 @@ int main(int argc, char **argv)
       return run_command(commands[i].fn, --argc, ++argv);
   }
 
-  fprintf("Command not found: %s\n", argv[1]);
+  fprintf(stderr, "Command not found: %s\n", argv[1]);
   
 }
