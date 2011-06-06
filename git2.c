@@ -17,7 +17,7 @@ int run_command(git_cb fn, int argc, char **argv)
 
   error = fn(NULL, argc, argv);
   if (error < GIT_SUCCESS)
-    fprintf(stderr, "booh: %s\n", git_lasterror(error));
+    fprintf(stderr, "booh: %s\n", git_lasterror());
 
   return !!error;
 }

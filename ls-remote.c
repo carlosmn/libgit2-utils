@@ -1,10 +1,15 @@
-int ls_remote(git_repository *repo, int argc, int argv)
+#include <git2.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "common.h"
+
+int ls_remote(git_repository *repo, int argc, char **argv)
 {
   git_transport *t;
   git_headarray heads;
   int error;
 
-  error = git_transport_new(&t, repo, argv[0]);
+  error = git_transport_new(&t, repo, argv[1]);
   if (error < GIT_SUCCESS) {
     fprintf(stderr, "Failed to create transport: %s", git_lasterror());
     return error;
