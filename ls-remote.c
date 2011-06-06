@@ -7,7 +7,8 @@ int ls_remote(git_repository *repo, int argc, char **argv)
 {
   git_transport *t;
   git_headarray heads;
-  int error;
+  git_remote_head *head;
+  int error, i;
 
   error = git_transport_new(&t, repo, argv[1]);
   if (error < GIT_SUCCESS) {
@@ -26,6 +27,16 @@ int ls_remote(git_repository *repo, int argc, char **argv)
     fprintf(stderr, "Failed to list refs: %s", git_lasterror());
     return error;
   }
+
+  for(i = 0; i < heads.len; ++i){
+	  char oid[GIT_OID_HEXSZ + 1] = {0};
+	  head = heads.heads[i];
+	  git_oid_fmt(oid, &head->oid);
+	  printf("%s\t%s\n", oid, head->name);
+  }
+
+  git_transport_close(t);
+  git_transport_free(t);
 
   return GIT_SUCCESS;
 }
