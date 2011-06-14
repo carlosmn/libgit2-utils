@@ -6,8 +6,10 @@
 int parse_pkt_line(git_repository *repo, int argc, char **argv)
 {
   char *line = argv[1];
-  char *after = line, oid[GIT_OID_HEXSZ+1] = {0};
-  int error, len;
+  char oid[GIT_OID_HEXSZ+1] = {0};
+  const char *after = line;
+  int error;
+  unsigned int len;
   git_pkt *pkt;
 
   /*
@@ -26,11 +28,11 @@ int parse_pkt_line(git_repository *repo, int argc, char **argv)
   after = line;
 
   while(*after != '\0'){
-	  error = git_pkt_parse_line(&pkt, line, &after);
+	  error = git_pkt_parse_line(&pkt, line, &after, len);
 	  if (error < GIT_SUCCESS)
 		  return error;
 
-	  line = after;
+	  line = (char *) after;
 
 	  switch(pkt->type){
 	  case GIT_PKT_REF:
