@@ -5,7 +5,7 @@
 
 int ls_remote(git_repository *repo, int argc, char **argv)
 {
-  git_transport *t;
+  git_transport *t = NULL;
   git_headarray heads;
   git_remote_head *head;
   int error, i;
@@ -18,14 +18,13 @@ int ls_remote(git_repository *repo, int argc, char **argv)
 
   error = git_transport_connect(t, INTENT_PULL);
   if (error < GIT_SUCCESS) {
-    fprintf(stderr, "Failed to connect transport: %s", git_lasterror());
-    return error;
+    goto cleanup;
   }
 
   error = git_transport_ls(t, &heads);
   if (error < GIT_SUCCESS) {
-    fprintf(stderr, "Failed to list refs: %s", git_lasterror());
-    return error;
+    git__rethrow(error, "Failed to list refs");
+    goto cleanup;
   }
 
   for(i = 0; i < heads.len; ++i){
@@ -35,6 +34,7 @@ int ls_remote(git_repository *repo, int argc, char **argv)
 	  printf("%s\t%s\n", oid, head->name);
   }
 
+ cleanup:
   git_transport_close(t);
   git_transport_free(t);
 
