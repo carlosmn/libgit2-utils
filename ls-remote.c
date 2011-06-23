@@ -10,7 +10,7 @@ int ls_remote(git_repository *repo, int argc, char **argv)
   git_remote_head *head;
   int error, i;
 
-  error = git_transport_new(&t, repo, argv[1]);
+  error = git_transport_new(&t, argv[1]);
   if (error < GIT_SUCCESS) {
     fprintf(stderr, "Failed to create transport: %s", git_lasterror());
     return error;

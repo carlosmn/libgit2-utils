@@ -10,7 +10,8 @@ CFLAGS += $(DEPS)
 OBJECTS = \
   git2.o \
   ls-remote.o \
-  parse-pkt-line.o
+  parse-pkt-line.o \
+  show-remote.o
 
 all: $(OBJECTS)
 	gcc $(CFLAGS) -o git2 $(OBJECTS)

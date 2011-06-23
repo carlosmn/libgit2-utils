@@ -9,16 +9,25 @@ struct {
 } commands[] = {
   {"ls-remote", ls_remote},
   {"parse-pkt-line", parse_pkt_line},
+  {"show-remote", show_remote},
   { NULL, NULL}
 };
 
 int run_command(git_cb fn, int argc, char **argv)
 {
   int error;
+  git_repository *repo;
 
-  error = fn(NULL, argc, argv);
+  error = git_repository_open(&repo, ".git");
   if (error < GIT_SUCCESS)
-    fprintf(stderr, "booh: %s\n", git_lasterror());
+    repo = NULL;
+
+  error = fn(repo, argc, argv);
+  if (error < GIT_SUCCESS)
+    fprintf(stderr, "booh:\n %s\n", git_lasterror());
+
+  if(repo)
+    git_repository_free(repo);
 
   return !!error;
 }
