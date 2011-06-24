@@ -4,7 +4,7 @@
 #include <string.h>
 #include "common.h"
 
-void show_refs(git_headarray *refs)
+static void show_refs(git_headarray *refs)
 {
   int i;
   git_remote_head *head;
