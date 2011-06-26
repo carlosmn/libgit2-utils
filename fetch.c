@@ -45,6 +45,10 @@ int fetch(git_repository *repo, int argc, char **argv)
 
   show_refs(&refs);
 
+  error = git_fetch_negotiate(&refs, repo, remote);
+  if (error < GIT_SUCCESS)
+    return error;
+
   git_remote_free(remote);
   git_config_free(cfg);
 
