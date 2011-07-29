@@ -10,6 +10,7 @@ struct {
   {"ls-remote", ls_remote},
   {"parse-pkt-line", parse_pkt_line},
   {"show-remote", show_remote},
+  {"index-pack", index_pack},
   { NULL, NULL}
 };
 

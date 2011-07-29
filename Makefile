@@ -11,7 +11,8 @@ OBJECTS = \
   git2.o \
   ls-remote.o \
   parse-pkt-line.o \
-  show-remote.o
+  show-remote.o \
+  index-pack.o
 
 all: $(OBJECTS)
 	gcc $(CFLAGS) -o git2 $(OBJECTS)
