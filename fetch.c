@@ -35,7 +35,7 @@ int fetch(git_repository *repo, int argc, char **argv)
   if (error < GIT_SUCCESS)
     return error;
 
-  error = git_remote_connect(remote, INTENT_PULL);
+  error = git_remote_connect(remote, GIT_DIR_FETCH);
   if (error < GIT_SUCCESS)
     return error;
 
