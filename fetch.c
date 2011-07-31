@@ -49,6 +49,7 @@ int fetch(git_repository *repo, int argc, char **argv)
   if (error < GIT_SUCCESS)
     return error;
 
+  free(refs.heads);
   git_remote_free(remote);
   git_config_free(cfg);
 
