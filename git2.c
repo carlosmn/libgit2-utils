@@ -8,8 +8,8 @@ struct {
   git_cb fn;
 } commands[] = {
   {"ls-remote", ls_remote},
-  {"parse-pkt-line", parse_pkt_line},
-  {"show-remote", show_remote},
+  // {"parse-pkt-line", parse_pkt_line},
+  //  {"show-remote", show_remote},
   {"fetch", fetch},
   { NULL, NULL}
 };
