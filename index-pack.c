@@ -12,6 +12,7 @@ int index_cb(const git_indexer_stats *stats, void *data)
 int index_pack(git_repository *repo, int argc, char **argv)
 {
   git_indexer *indexer;
+  git_indexer_stats stats;
   int error;
   char hash[GIT_OID_HEXSZ + 1] = {0};
 
@@ -24,14 +25,14 @@ int index_pack(git_repository *repo, int argc, char **argv)
   if (error < GIT_SUCCESS)
     return error;
 
-  error = git_indexer_run(indexer, index_cb, NULL);
+  error = git_indexer_run(indexer, &stats);
   if (error < GIT_SUCCESS)
     return error;
 
   puts("");
   error = git_indexer_write(indexer);
 
-  git_oid_fmt(hash, git_indexer_result(indexer));
+  git_oid_fmt(hash, git_indexer_hash(indexer));
   puts(hash);
 
   git_indexer_free(indexer);
