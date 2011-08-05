@@ -87,6 +87,10 @@ int fetch(git_repository *repo, int argc, char **argv)
 
   printf("Received %d objects\n", stats.total);
 
+  error = git_indexer_write(idx);
+  if (error < GIT_SUCCESS)
+    return error;
+
   error = rename_packfile(packname, idx);
   if (error < GIT_SUCCESS)
     return error;
