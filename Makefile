@@ -10,7 +10,8 @@ CFLAGS += $(DEPS)
 OBJECTS = \
   git2.o \
   ls-remote.o \
-  fetch.o
+  fetch.o \
+  index-pack.o
 #  parse-pkt-line.o \
   show-remote.o \
   fetch.o

@@ -11,6 +11,7 @@ struct {
   // {"parse-pkt-line", parse_pkt_line},
   //  {"show-remote", show_remote},
   {"fetch", fetch},
+  {"index-pack", index_pack},
   { NULL, NULL}
 };
 
