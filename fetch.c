@@ -16,9 +16,8 @@ static void show_refs(git_headarray *refs)
 	  char oid[GIT_OID_HEXSZ + 1] = {0};
 	  char *havewant;
 	  head = refs->heads[i];
-	  havewant = head->type == GIT_WHN_WANT ? "want" : "have";
 	  git_oid_fmt(oid, &head->oid);
-	  printf("%s\t%s\t%s\n", havewant, oid, head->name);
+	  printf("%s\t%s\n", oid, head->name);
   }
 }
 
@@ -92,6 +91,10 @@ int fetch(git_repository *repo, int argc, char **argv)
     return error;
 
   error = rename_packfile(packname, idx);
+  if (error < GIT_SUCCESS)
+    return error;
+
+  error = git_remote_update_tips(remote);
   if (error < GIT_SUCCESS)
     return error;
 
