@@ -72,27 +72,30 @@ int fetch(git_repository *repo, int argc, char **argv)
   if (error < GIT_SUCCESS)
     return error;
 
-  printf("The packname is %s\n", packname);
+  /* No error and a NULL packname means no packfile was needed */
+  if (packanme != NULL) {
+	  printf("The packname is %s\n", packname);
 
-  error = git_indexer_new(&idx, packname);
-  if (error < GIT_SUCCESS)
-    return error;
+	  error = git_indexer_new(&idx, packname);
+	  if (error < GIT_SUCCESS)
+		  return error;
 
-  /* This should be run in paralel, but it'd be too complicated right now */
+	  /* This should be run in paralel, but it'd be too complicated right now */
 
-  error = git_indexer_run(idx, &stats);
-  if (error < GIT_SUCCESS)
-    return error;
+	  error = git_indexer_run(idx, &stats);
+	  if (error < GIT_SUCCESS)
+		  return error;
 
-  printf("Received %d objects\n", stats.total);
+	  printf("Received %d objects\n", stats.total);
 
-  error = git_indexer_write(idx);
-  if (error < GIT_SUCCESS)
-    return error;
+	  error = git_indexer_write(idx);
+	  if (error < GIT_SUCCESS)
+		  return error;
 
-  error = rename_packfile(packname, idx);
-  if (error < GIT_SUCCESS)
-    return error;
+	  error = rename_packfile(packname, idx);
+	  if (error < GIT_SUCCESS)
+		  return error;
+  }
 
   error = git_remote_update_tips(remote);
   if (error < GIT_SUCCESS)
