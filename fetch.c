@@ -73,7 +73,7 @@ int fetch(git_repository *repo, int argc, char **argv)
     return error;
 
   /* No error and a NULL packname means no packfile was needed */
-  if (packanme != NULL) {
+  if (packname != NULL) {
 	  printf("The packname is %s\n", packname);
 
 	  error = git_indexer_new(&idx, packname);
