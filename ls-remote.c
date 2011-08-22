@@ -17,6 +17,7 @@ static void show_refs(git_headarray *refs)
   }
 }
 
+#if 0
 int use_transport(char *url)
 {
   int error;
@@ -45,6 +46,33 @@ int use_transport(char *url)
  cleanup:
   git_transport_close(t);
   git_transport_free(t);
+
+  return error;
+}
+#endif
+
+int use_unnamed(git_repository *repo, const char *url)
+{
+  git_remote *remote = NULL;
+  git_headarray refs;
+  int error;
+
+  error = git_remote_new(&remote, repo, url);
+  if (error < GIT_SUCCESS)
+    goto cleanup;
+
+  error = git_remote_connect(remote, GIT_DIR_FETCH);
+  if (error < GIT_SUCCESS)
+    goto cleanup;
+
+  error = git_remote_ls(remote, &refs);
+  if (error < GIT_SUCCESS)
+    goto cleanup;
+
+  show_refs(&refs);
+
+  cleanup:
+  git_remote_free(remote);
 
   return error;
 }
@@ -89,7 +117,7 @@ int ls_remote(git_repository *repo, int argc, char **argv)
 
   /* If there's a ':' in the name, assume it's an URL */
   if (strchr(argv[1], ':') != NULL) {
-    error = use_transport(argv[1]);
+    error = use_unnamed(repo, argv[1]);
   } else {
     error = use_remote(repo, argv[1]);
   }
