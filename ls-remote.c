@@ -37,8 +37,8 @@ int use_transport(char *url)
 
   error = git_transport_ls(t, &refs);
   if (error < GIT_SUCCESS) {
-    git__rethrow(error, "Failed to list refs");
-    goto cleanup;
+	  return error;
+	  goto cleanup;
   }
 
   show_refs(&refs);
@@ -61,6 +61,7 @@ int use_unnamed(git_repository *repo, const char *url)
   if (error < GIT_SUCCESS)
     goto cleanup;
 
+  puts("Connecting...");
   error = git_remote_connect(remote, GIT_DIR_FETCH);
   if (error < GIT_SUCCESS)
     goto cleanup;

@@ -30,13 +30,13 @@ static int rename_packfile(char *packname, git_indexer *idx)
   slash = strrchr(path, '/');
 
   if (!slash)
-    return git__throw(GIT_EINVALIDARGS, "The path doesn't have slashes");
+    return GIT_EINVALIDARGS;
 
   memset(oid, 0x0, sizeof(oid));
   git_oid_fmt(oid, git_indexer_hash(idx));
   ret = sprintf(slash + 1, "pack-%s.pack", oid);
   if(ret < 0)
-    return git__throw(GIT_EOSERR, "Failed to generate pack name");
+    return GIT_EOSERR;
 
   printf("Renameing pack to %s\n", path);
   return rename(packname, path);
