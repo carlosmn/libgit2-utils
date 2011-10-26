@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "common.h"
 
-int diff_callback(const git_tree_diff_t *diff, void *data)
+int diff_callback(const git_tree_diff_data *diff, void *data)
 {
 	char mod = 'E', oldoid[GIT_OID_HEXSZ + 1] = {0}, newoid[GIT_OID_HEXSZ + 1] = {0};
 
@@ -30,12 +30,22 @@ int diff_tree(git_repository *repo, int argc, char **argv)
 {
 	git_oid old, new;
 	git_tree *told, *tnew;
+	int error;
 
 	git_oid_fromstr(&old, argv[1]);
 	git_oid_fromstr(&new, argv[2]);
 
-	git_tree_lookup(&told, repo, &old);
-	git_tree_lookup(&tnew, repo, &new);
+	error = git_tree_lookup(&told, repo, &old);
+	if (error < GIT_SUCCESS)
+	    return error;
+	error = git_tree_lookup(&tnew, repo, &new);
+	if (error < GIT_SUCCESS)
+	    return error;
 
-	git_tree_diff(told, tnew, diff_callback, NULL);
+	error = git_tree_diff(told, tnew, diff_callback, NULL);
+
+	git_tree_close(told);
+	git_tree_close(tnew);
+
+	return error;
 }
