@@ -12,6 +12,7 @@ struct {
   //  {"show-remote", show_remote},
   {"fetch", fetch},
   {"index-pack", index_pack},
+  {"status", status},
   { NULL, NULL}
 };
 
