@@ -12,6 +12,7 @@ struct {
   //  {"show-remote", show_remote},
   {"fetch", fetch},
   {"index-pack", index_pack},
+  {"diff-tree", diff_tree},
   { NULL, NULL}
 };
 
@@ -44,9 +45,10 @@ int main(int argc, char **argv)
 
   for (i = 0; commands[i].name != NULL; ++i) {
     if (!strcmp(argv[1], commands[i]))
-      return run_command(commands[i].fn, --argc, ++argv);
+      return !!run_command(commands[i].fn, --argc, ++argv);
   }
 
   fprintf(stderr, "Command not found: %s\n", argv[1]);
   
+  return EXIT_FAILURE;
 }

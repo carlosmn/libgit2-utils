@@ -11,4 +11,6 @@ int show_remote(git_repository *repo, int argc, char **argv);
 int fetch(git_repository *repo, int argc, char **argv);
 int index_pack(git_repository *repo, int argc, char **argv);
 
+int diff_tree(git_repository *repo, int argc, char **argv);
+
 #endif /* __COMMON_H__ */
