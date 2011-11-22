@@ -1,3 +1,4 @@
+
 #include <git2.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,7 +11,7 @@ int diff_callback(const git_tree_diff_data *diff, void *data)
 	git_oid_fmt(oldoid, &diff->old_oid);
 	git_oid_fmt(newoid, &diff->new_oid);
 	switch (diff->status) {
-	case GIT_STATUS_NEW:
+	case GIT_STATUS_ADDED:
 		mod = 'A';
 		break;
 	case GIT_STATUS_MODIFIED:

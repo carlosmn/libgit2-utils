@@ -18,4 +18,4 @@ OBJECTS = \
   fetch.o
 
 all: $(OBJECTS)
-	gcc $(CFLAGS) -o git2 $(OBJECTS) libgit2.dll.a
+	gcc $(CFLAGS) -o git2 $(OBJECTS)
