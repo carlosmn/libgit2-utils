@@ -3,15 +3,16 @@
 import tarfile, os, argparse
 import pygit2 as git
 from cStringIO import StringIO
+from pygit2 import GIT_FILEMODE_TREE as TREE,  GIT_FILEMODE_LINK as SYMLINK
 
 def add_file(tar, entry, path = None):
-    object = entry.to_object().read_raw()
+    object = repo[entry.id].read_raw()
     name = path if path != None else entry.name
     info = tarfile.TarInfo(name)
     info.size = len(object)
     info.mtime = timestamp
     info.uname = info.gname = 'root' # For compatability with git
-    if entry.attributes == 0120000:
+    if entry.filemode == SYMLINK:
         info.type = tarfile.SYMTYPE
         info.linkname = object
         info.mode = 0777
@@ -22,7 +23,7 @@ def add_dir(tar, tentry, path = []):
     tree = repo[tentry.oid]
     path.append(tentry.name)
     for entry in tree:
-        if entry.attributes == 040000:
+        if entry.filemode == TREE:
             add_dir(out, entry, path)
         else:
             path.append(entry.name)
@@ -38,7 +39,7 @@ args = parse_args()
 repo = git.Repository('.')
 
 # FIXME: This assumes a ref pointing to a commit
-oid = repo.lookup_reference(args.treeish).resolve().oid
+oid = repo.lookup_reference(args.treeish).resolve().target
 commit = repo[oid]
 timestamp = commit.committer.time
 tree = commit.tree
@@ -50,7 +51,7 @@ if filename == None:
 out = tarfile.open(filename, mode='w')
 
 for entry in tree:
-    if entry.attributes == 040000:
+    if entry.filemode == TREE:
         add_dir(out, entry)
     else:
         add_file(out, entry)
